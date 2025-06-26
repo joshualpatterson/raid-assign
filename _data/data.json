@@ -1,0 +1,184 @@
+{
+    "instances": [
+        {
+            "id": 1,
+            "name": "Onyxia's Lair",
+            "abbr": "ONY"
+        },
+        {
+            "id": 2,
+            "name": "Molten Core",
+            "abbr": "MC"
+        },
+        {
+            "id": 3,
+            "name": "Blackwing Lair",
+            "abbr": "BWL"
+        },
+        {
+            "id": 4,
+            "name": "Zul'Gurub",
+            "abbr": "ZG"
+        },
+        {
+            "id": 5,
+            "name": "Ruins of Ahn'Qiraj",
+            "abbr": "AQ20"
+        },
+        {
+            "id": 6,
+            "name": "Temple of Ahn'Qiraj",
+            "abbr": "AQ40"
+        },
+        {
+            "id": 7,
+            "name": "Naxxaramas",
+            "abbr": "NAXX"
+        }
+    ],
+    "roles": [
+        {
+            "name": "Tank",
+            "img": "tank.jpg"
+        },
+        {
+            "name": "Healer",
+            "img": "healer.jpg"
+        },
+        {
+            "name": "Caster",
+            "img": "caster.jpg"
+        },
+        {
+            "name": "Fighter",
+            "img": "fighter.jpg"
+        }
+    ],
+    "classes": [
+        {
+            "name": "Druid",
+            "img": "druid.jpg",
+            "color": "#FF7C0A"
+        },
+        {
+            "name": "Hunter",
+            "img": "hunter.jpg",
+            "color": "#AAD372"
+        },
+        {
+            "name": "Mage",
+            "img": "mage.jpg",
+            "color": "#3FC7EB"
+        },
+        {
+            "name": "Paladin",
+            "img": "paladin.jpg",
+            "color": "#F48CBA"
+        },
+        {
+            "name": "Priest",
+            "img": "priest.jpg",
+            "color": "#FFFFFF"
+        },
+        {
+            "name": "Rogue",
+            "img": "rogue.jpg",
+            "color": "#FFF468"
+        },
+        {
+            "name": "Shaman",
+            "img": "shaman.jpg",
+            "color": "#0070DD"
+        },
+        {
+            "name": "Warlock",
+            "img": "warlock.jpg",
+            "color": "#8788EE"
+        },
+        {
+            "name": "Warrior",
+            "img": "warrior.jpg",
+            "color": "#C69B6D"
+        }
+    ],
+    "raid_markers": [
+        {
+            "name": "Skull",
+            "img": "skull.png"
+        },
+        {
+            "name": "Cross",
+            "img": "cross.png"
+        },
+        {
+            "name": "Square",
+            "img": "square.png"
+        },
+        {
+            "name": "Moon",
+            "img": "moon.png"
+        },
+        {
+            "name": "Triangle",
+            "img": "triangle.png"
+        },
+        {
+            "name": "Diamond",
+            "img": "diamond.png"
+        },
+        {
+            "name": "Circle",
+            "img": "circle.png"
+        },
+        {
+            "name": "Star",
+            "img": "star.png"
+        }
+    ],
+    "spells":[
+        {
+            "name": "Faerie Fire",
+            "img": "faerie_fire.jpg"
+        },
+        {
+            "name": "Gift of the Wild",
+            "img": "gift_of_the_wild.jpg"
+        },
+        {
+            "name": "Hibernate",
+            "img": "hibernate.jpg"
+        },
+        {
+            "name": "Hunter's Mark",
+            "img": "hunters_mark.jpg"
+        },
+        {
+            "name": "Polymorph",
+            "img": "polymorph.jpg"
+        },
+        {
+            "name": "Prayer of Fortitude",
+            "img": "prayer_of_fortitude.jpg"
+        },
+        {
+            "name": "Prayer of Spirit",
+            "img": "prayer_of_spirit.jpg"
+        },
+        {
+            "name": "Seal of Light",
+            "img": "seal_of_light.jpg"
+        },
+        {
+            "name": "Seal of Wisdom",
+            "img": "seal_of_wisdom.jpg"
+        },
+        {
+            "name": "Soulstone",
+            "img": "soulstone.jpg"
+        },
+        {
+            "name": "Tranquilizing Shot",
+            "img": "tranquilizing_shot.jpg"
+        }
+    ]
+}

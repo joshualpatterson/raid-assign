@@ -1,0 +1,8 @@
+title: Raid Assign
+description: A Jekyll site for creating and sharing raid assignments.
+baseurl: "/raid-assign"
+url: "https://joshualpatterson.github.io"
+plugins:
+  - jekyll-data
+  - jekyll-seo-tag
+markdown: kramdown

@@ -1,0 +1,64 @@
+.class-icon {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    vertical-align: top;
+    border-radius: 50%;
+}
+{% for cls in site.data.data.classes %}
+.class-icon-{{ cls.name | downcase }} {
+    background-image: url('{{ site.baseurl }}/assets/images/classes/{{ cls.img }}');
+}
+.class-color-{{ cls.name | downcase }} {
+    color: {{ cls.color }};
+}
+{% endfor %}
+
+.role-icon {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    vertical-align: top;
+    border-radius: 50%;
+}
+{% for role in site.data.data.roles %}
+.role-icon-{{ role.name | downcase }} {
+  background-image: url('{{ site.baseurl }}/assets/images/roles/{{ role.img }}');
+}
+{% endfor %}
+
+.raid-marker {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    vertical-align: top;
+    margin: 0 5px;
+    border-radius: 5px;
+}
+
+{% for marker in site.data.data.raid_markers %}
+.raid-marker-{{ marker.name | downcase }} {
+  background-image: url('{{ site.baseurl }}/assets/images/raid_markers/{{ marker.img }}');
+}
+{% endfor %}
+
+.character-name {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.spell-icon {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border-radius: 25%;
+}

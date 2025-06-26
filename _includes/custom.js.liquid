@@ -1,0 +1,454 @@
+// create raid encounter phase character assignment
+function raidEncounterPhaseCharacterAssignment(data) {
+    let raw = false;
+    if (data) {
+        raw = true
+    } else {
+        data = {
+            name: null,
+            value: null,
+            raid_marker: null,
+            spell: null,
+            target: null
+        };
+    }
+    const container = document.createElement('ul');
+    container.classList.add('raid-encounter-phase-character-assignment');
+    container.innerHTML = `
+        <input type="text" class="form-control form-control-sm raid-encounter-phase-character-assignment-name-input" style="max-width: 200px;" value="${data.name || ''}" placeholder="Assignment"/>
+        <ul>
+            <li>
+                <div class="d-flex justify-content-start align-items-center gap-1 p-1">
+                    <input type="text" class="form-control form-control-sm raid-encounter-phase-character-assignment-value-input" value="${data.value || ''}" placeholder="Value"/>
+                    <select class="form-control form-control-sm raid-encounter-phase-character-assignment-marker-input" style="max-width: 200px;">
+                        <option value="">~Select Marker~</option>
+                        {% for marker in site.data.data.raid_markers %}
+                        <option value="{{ marker.name | downcase }}" ${(data.raid_marker === "{{ marker.name | downcase }}") ? 'selected' : ''}>{{ marker.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <select class="form-control form-control-sm raid-encounter-phase-character-assignment-spell-input" style="max-width: 200px;">
+                        <option value="">~Select Spell~</option>
+                        {% for spell in site.data.data.spells %}
+                        <option value="{{ spell.img }}" ${(data.spell === "{{ spell.img }}") ? 'selected' : ''}>{{ spell.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <select class="form-control form-control-sm raid-encounter-phase-character-assignment-target-input" style="max-width: 200px;">
+                        <option value="">~Select Character~</option>
+                        ${
+                            data.target
+                            ? `<option value="${data.target}" selected>${data.target}</option>`
+                            : ''
+                        }
+                    </select>
+                    <button class="btn btn-danger btn-sm delete-raid-encounter-phase-character-assignment-btn"><i class="bi bi-clipboard-x"></i></button>
+                </div>
+            </li>
+        </ul>
+    `;
+    if (raw) {
+        return container.outerHTML;
+    } else {
+        return container;
+    }
+}
+
+// create raid encounter phase character
+function raidEncounterPhaseCharacter(data) {
+    let raw = false;
+    if (data) {
+        raw = true
+    } else {
+        data = {
+            name: null,
+            assignments: []
+        };
+    }
+    const container = document.createElement('ul');
+    container.classList.add('raid-encounter-phase-character');
+    container.innerHTML = `
+        <li>
+            <div class="d-flex justify-content-start align-items-center gap-1 p-1">
+                <select class="form-control form-control-sm raid-encounter-phase-character-input" style="max-width: 200px;">
+                    <option value="">~Select Character~</option>
+                    ${
+                        data.name
+                        ? `<option value="${data.name}" selected>${data.name}</option>`
+                        : ''
+                    }
+                </select>
+                <button class="btn btn-danger btn-sm delete-raid-encounter-phase-character-btn"><i class="bi bi-person-x-fill"></i> Delete</button>
+                <button class="btn btn-success btn-sm add-raid-encounter-phase-character-assignment-btn"><i class="bi bi-clipboard-plus"></i> Add Assignment</button>
+            </div>
+            <ul class="raid-encounter-phase-character-assignments-container">
+            ${
+                data.assignments.length > 0
+                ? data.assignments.map(assignment => raidEncounterPhaseCharacterAssignment(assignment)).join('')
+                : ''
+            }
+            </ul>
+        </li>
+    `;
+    if (raw) {
+        return container.outerHTML;
+    } else {
+        return container;
+    }
+}
+
+// create raid encounter phase
+function raidEncounterPhase(data) {
+    let raw = false;
+    if (data) {
+        raw = true
+    } else {
+        data = {
+            name: null,
+            characters: []
+        };
+    }
+    const container = document.createElement('ul');
+    container.classList.add('raid-encounter-phase');
+    container.innerHTML = `
+        <li>
+            <div class="d-flex justify-content-start align-items-center gap-1 p-1">
+                <input type="text" class="form-control form-control-sm raid-encounter-phase-name-input" style="max-width: 200px;" value="${data.name || ''}" placeholder="Phase Name"/>
+                <button class="btn btn-danger btn-sm delete-raid-encounter-phase-btn"><i class="bi bi-journal-x"></i> Delete</button>
+                <button class="btn btn-success btn-sm add-raid-encounter-phase-character-btn"><i class="bi bi-person-plus-fill"></i> Add Character</button>
+            </div>
+            <ul class="raid-encounter-phase-characters-container">
+            ${
+                data.characters.length > 0
+                ? data.characters.map(character => raidEncounterPhaseCharacter(character)).join('')
+                : ''
+            }
+            </ul>
+        </li>
+    `;
+    if (raw) {
+        return container.outerHTML;
+    } else {
+        return container;
+    }
+}
+
+// create raid encounter
+function raidEncounter(data) {
+    let raw = false;
+    if (data) {
+        raw = true
+    } else {
+        data = {
+            name: null,
+            phases: []
+        };
+    }
+    const container = document.createElement('ul');
+    container.classList.add('raid-encounter');
+    container.innerHTML = `
+        <li>
+            <div class="d-flex justify-content-start align-items-center gap-1 p-1">
+                <input type="text" class="form-control form-control-sm raid-encounter-name-input" style="max-width: 200px;" value="${data.name || ''}" placeholder="Encounter Name"/>
+                <button class="btn btn-danger btn-sm delete-raid-encounter-btn"><i class="bi bi-shield-x"></i> Delete</button>
+                <button class="btn btn-success btn-sm add-raid-encounter-phase-btn"><i class="bi bi-journal-plus"></i> Add Phase</button>
+            </div>
+            <ul class="raid-encounter-phases-container">
+            ${
+                data.phases.length > 0
+                ? data.phases.map(phase => raidEncounterPhase(phase)).join('')
+                : ''
+            }
+            </ul>
+        </li>
+    `;
+    if (raw) {
+        return container.outerHTML;
+    } else {
+        return container;
+    }
+}
+
+// create raid character
+function raidCharacter(data) {
+    data = data || {
+        name: null,
+        class: null,
+        role: null
+    };
+    const container = document.createElement('div');
+    container.classList.add('col-12', 'col-xl-6', 'd-flex', 'justify-content-between', 'align-items-center', 'raid-character');
+    container.innerHTML = `
+        <div class="form-group flex-grow-1 m-1">
+            <input type="text" class="form-control form-control-sm raid-character-name-input" value="${data.name || ''}" placeholder="Character Name"/>
+        </div>
+        <div class="form-group m-1">
+            <select class="form-control form-control-sm raid-character-class-input">
+                <option value="">~Select Class~</option>
+                {% for cls in site.data.data.classes %}
+                <option value="{{ cls.name | downcase }}" ${(data.class === "{{ cls.name | downcase }}") ? 'selected' : ''}>{{ cls.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group m-1">
+            <select class="form-control form-control-sm raid-character-role-input" placeholder="Role">
+                <option value="">~Select Role~</option>
+                {% for role in site.data.data.roles %}
+                <option value="{{ role.name | downcase }}" ${(data.role === "{{ role.name | downcase }}") ? 'selected' : ''}>{{ role.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="m-1">
+            <button class="btn btn-danger btn-sm delete-raid-character-btn"><i class="bi bi-person-x"></i> Delete</button>
+        </div>
+    `;
+
+    return container;
+}
+
+// add raid character
+$('#add-character-btn').click(function() {
+    const container = $('#characters-container');
+    const character = raidCharacter();
+    container.append(character);
+});
+
+// delete raid character
+$('body').delegate('.delete-raid-character-btn', 'click', function() {
+    const el = $(this).parents('.raid-character')[0];
+    el.remove();
+});
+
+// add raid encounter
+$('#add-encounter-btn').click(function() {
+    const container = $('#encounters-container');
+    const encounter = raidEncounter();
+    container.append(encounter);
+});
+
+// delete raid encounter
+$('body').delegate('.delete-raid-encounter-btn', 'click', function() {
+    const el = $(this).parents('.raid-encounter')[0];
+    el.remove();
+});
+
+// add raid encounter phase
+$('body').delegate('.add-raid-encounter-phase-btn', 'click', function() {
+    const container = $(this).parent().nextAll('.raid-encounter-phases-container').first();
+    const phase = raidEncounterPhase();
+    container.append(phase);
+});
+
+// delete raid encounter phase
+$('body').delegate('.delete-raid-encounter-phase-btn', 'click', function() {
+    const el = $(this).parents('.raid-encounter-phase')[0];
+    el.remove();
+});
+
+// add raid encounter phase character
+$('body').delegate('.add-raid-encounter-phase-character-btn', 'click', function() {
+    const container = $(this).parent().nextAll('.raid-encounter-phase-characters-container').first();
+    const character = raidEncounterPhaseCharacter();
+    container.append(character);
+});
+
+// delete raid encounter phase character
+$('body').delegate('.delete-raid-encounter-phase-character-btn', 'click', function() {
+    const el = $(this).parents('.raid-encounter-phase-character')[0];
+    el.remove();
+});
+
+// add raid encounter phase character assignment
+$('body').delegate('.add-raid-encounter-phase-character-assignment-btn', 'click', function() {
+    const container = $(this).parent().nextAll('.raid-encounter-phase-character-assignments-container').first();
+    const assignment = raidEncounterPhaseCharacterAssignment();
+    container.append(assignment);
+});
+
+// delete raid encounter phase character assignment
+$('body').delegate('.delete-raid-encounter-phase-character-assignment-btn', 'click', function() {
+    const el = $(this).parents('.raid-encounter-phase-character-assignment')[0];
+    el.remove();
+});
+
+// update characters
+function updateCharacterSelectOptions() {
+    const names = $(`.raid-character-name-input`)
+    .map(function () {
+        return $(this).val().trim();
+    })
+    .get()
+    .filter(name => name !== '')
+    .sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
+    const selectSelector =
+        '.raid-encounter-phase-character-input, ' +
+        '.raid-encounter-phase-character-assignment-target-input';
+    $(selectSelector).each(function () {
+        const $select = $(this);
+        const currentValue = $select.val();
+        $select.empty();
+        $select.append($('<option>').val('').text('~Select Character~'));
+        names.forEach(function (name) {
+            $select.append($('<option>').val(name).text(name));
+        });
+        if (names.includes(currentValue)) {
+            $select.val(currentValue);
+        } else {
+            $select.val('');
+        }
+    });
+}
+
+// Listen for changes to character name inputs
+$(document).on('input change', '.raid-character-name-input', function () {
+    updateCharacterSelectOptions();
+});
+
+// Listen for removal of character name inputs
+const observer = new MutationObserver(function (mutations) {
+    mutations.forEach(mutation => {
+        mutation.removedNodes.forEach(node => {
+            if (node.nodeType === 1 && $(node).hasClass('raid-character')) {
+                updateCharacterSelectOptions();
+            }
+        });
+    });
+});
+
+$(document).ready(function () {
+    const container = document.body;
+    observer.observe(container, { childList: true, subtree: true });
+});
+
+// import json
+$('#json-import-btn').click(function() {
+    let data = $('#json-import-data').val();
+    try {
+        JSON.parse(data);
+        data = JSON.parse(data);
+        $('#raid-instance-input').val(data.instance_id);
+        $('#raid-timestamp-input').val(data.timestamp);
+        const charactersContainer = $('#characters-container');
+        charactersContainer.html('');
+        data.characters.forEach(character => {
+            charactersContainer.append(raidCharacter(character));
+        });
+        const encountersContainer = $('#encounters-container');
+        encountersContainer.html('');
+        data.encounters.forEach(encounter => {
+            encountersContainer.append(raidEncounter(encounter));
+        });
+        updateCharacterSelectOptions();
+        compileJsonExport();
+    } catch (e) {
+        window.alert('Import failed:' + e.message);
+        return false;
+    }
+});
+
+function compileJsonExport() {
+    let instance_id = $('#raid-instance-input').val();
+    let timestamp = $('#raid-timestamp-input').val();
+    let characters = $('#content').find('.raid-character');
+    let encounters = $('#content').find('.raid-encounter');
+    let raid = {
+        "instance_id": instance_id,
+        "timestamp": timestamp,
+        "characters": [],
+        "encounters": []
+    };
+    characters.each(function() {
+        let character = {
+        "name": $(this).find('.raid-character-name-input').val(),
+        "class": $(this).find('.raid-character-class-input').val(),
+        "role": $(this).find('.raid-character-role-input').val()
+        };
+        raid.characters.push(character);
+    });
+    encounters.each(function() {
+        let encounter = {
+        "name": $(this).find('.raid-encounter-name-input').val(),
+        "phases": []
+        };
+        let phases = $(this).find('.raid-encounter-phase');
+        phases.each(function() {
+        let phase = {
+            "name": $(this).find('.raid-encounter-phase-name-input').val(),
+            "characters": []
+        };
+        let phase_characters = $(this).find('.raid-encounter-phase-character');
+        phase_characters.each(function() {
+            let phase_character = {
+            "name": $(this).find('.raid-encounter-phase-character-input').val(),
+            "assignments": []
+            };
+            let phase_character_assignments = $(this).find('.raid-encounter-phase-character-assignment');
+            phase_character_assignments.each(function() {
+            let phase_character_assignment = {
+                "name": $(this).find('.raid-encounter-phase-character-assignment-name-input').val() || null,
+                "value": $(this).find('.raid-encounter-phase-character-assignment-value-input').val() || null,
+                "raid_marker": $(this).find('.raid-encounter-phase-character-assignment-marker-input').val() || null,
+                "spell": $(this).find('.raid-encounter-phase-character-assignment-spell-input').val() || null,
+                "target": $(this).find('.raid-encounter-phase-character-assignment-target-input').val() || null
+            };
+            phase_character.assignments.push(phase_character_assignment);
+            });
+            phase.characters.push(phase_character)
+        });
+        encounter.phases.push(phase);
+        });
+        raid.encounters.push(encounter);
+    });
+
+    $('#json-export-data').val(JSON.stringify(raid));
+}
+
+$(document).on('input change', 'input, select', function () {
+    compileJsonExport();
+});
+
+
+document.getElementById('save-gist-btn').addEventListener('click', async () => {
+    const token = document.getElementById('github-token').value.trim();
+    const rawJson = document.getElementById('json-export-data').value;
+
+    if (!token || !rawJson) {
+        alert("Both token and JSON data are required.");
+        return;
+    }
+
+    let parsed;
+    try {
+        parsed = JSON.parse(rawJson);
+    } catch (err) {
+        alert("Invalid JSON: " + err.message);
+        return;
+    }
+
+    const response = await fetch("https://api.github.com/gists", {
+        method: "POST",
+        headers: {
+            Authorization: `token ${token}`,
+            Accept: "application/vnd.github.v3+json"
+        },
+        body: JSON.stringify({
+            description: "Saved from Raid Assign",
+            public: true,
+            files: {
+                "raid.json": {
+                    content: JSON.stringify(parsed, null, 2)
+                }
+            }
+        })
+    });
+
+    const result = await response.json();
+
+    if (response.ok) {
+        const gistUrl = result.html_url;
+        const gistId = gistUrl.split('/').pop();
+        document.getElementById("saved-raid-container").innerHTML = `
+            <div class="alert alert-success"><strong>Success!</strong> Your raid has been saved and can be publically accessed here: <a href="raid?id=${gistId}">https://raidassign.it/raid?id=${gistId}</a></div>
+        `;
+    } else {
+        document.getElementById("saved-raid-container").textContent = `Error: ${result.message || 'Unknown error'}`;
+    }
+});

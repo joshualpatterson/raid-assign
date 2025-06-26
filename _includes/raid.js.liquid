@@ -1,0 +1,283 @@
+function formatTimestamp(ts) {
+  const date = new Date(ts);
+  const options = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+  };
+  return date.toLocaleString(undefined, options);
+}
+
+function getInstanceById(instance_id) {
+    instance_id = parseInt(instance_id);
+    if (instance_id === 0) {
+        return false;
+    }
+    {% for instance in site.data.data.instances %}
+    else if (instance_id === {{ instance.id }}) {
+        return "{{ instance.name }}";
+    }
+    {% endfor %}
+    return false;
+}
+
+function getCharacterByName(characters, name) {
+    return characters.find(character => character.name === name);
+}
+
+function hasRequiredKeys(obj, keys) {
+  return keys.every(key => obj.hasOwnProperty(key));
+}
+
+function verifyRaidJson(data) {
+    let parsed = JSON.parse(data);
+    if (!parsed) {
+        return false;
+    }
+    let raid = JSON.parse(data);
+
+    if (!hasRequiredKeys(raid, ["instance_id", "timestamp", "characters", "encounters"])) {
+        return false;
+    }
+
+    return raid;
+}
+
+function sortByName(arr) {
+    return arr.sort((a, b) => {
+        const nameA = (a.name || "").toLowerCase();
+        const nameB = (b.name || "").toLowerCase();
+        return nameA.localeCompare(nameB);
+    });
+}
+
+function loadRaid(raid, raid_id) {
+    const content = $('#content');
+    content.html('');
+
+    // sort characters alphabetically
+    let characters = sortByName(raid.characters);
+
+    let html = `
+        <div class="col-12 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 d-flex justify-content-between flex-wrap mb-2 gap-2">
+                            <span class="text-muted">Raid ID: <code>${raid_id}</code></span>
+                            <span class="text-muted">${formatTimestamp(raid.timestamp)} (server time)</span>
+                        </div>
+                        <div class="col-12 mb-2">
+                            <h3 class="text-center">${getInstanceById(raid.instance_id)}</h3>
+                        </div>
+                        <div class="col-12 mb-2">
+                            <h5 class="text-center">Filter</h5>
+                            <div class="row justify-content-center">
+                                <div class="col-12 col-md-4 mb-2">
+                                    <select class="form-select form-select-sm filter-select" id="filter-character">
+                                        <option value="">Character</option>
+                                        ${characters.map(character => `<option value="${character.name}">${character.name}</option>`)}
+                                    </select>
+                                </div>
+                                <div class="col-12 col-md-4 mb-2">
+                                    <select class="form-select form-select-sm filter-select" id="filter-class">
+                                        <option value="">Class</option>
+                                        {% for cls in site.data.data.classes %}
+                                        <option value="{{ cls.name | downcase }}">{{ cls.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-12 col-md-4 mb-2">
+                                    <select class="form-select form-select-sm filter-select" id="filter-role">
+                                        <option value="">Role</option>
+                                        {% for role in site.data.data.roles %}
+                                        <option value="{{ role.name | downcase }}">{{ role.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <h4>Encounters</h4>
+            <div class="accordion" id="encounters-accordion">
+                ${raid.encounters.map((encounter, i) => `
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="encounter-accordion-heading-${i}">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#encounter-accordion-collapse-${i}" aria-expanded="false" aria-controls="encounter-accordion-collapse-${i}">
+                            ${i+1}. ${encounter.name}
+                        </button>
+                    </h2>
+                    <div id="encounter-accordion-collapse-${i}" class="accordion-collapse collapse" aria-labeledby="encounter-accordion-heading-${i}">
+                        <div class="accordion-body">
+                            ${encounter.phases.map((phase, x) => `
+                            <div class="mb-4">
+                                <h5>${phase.name}</h5>
+                                
+                                ${phase.characters.map(character => {
+                                    let info = getCharacterByName(raid.characters, character.name);
+                                    character.class = info.class;
+                                    character.role = info.role;
+                                return `
+                                <div class="character-row" data-filter-character="${character.name}" data-filter-class="${character.class}" data-filter-role="${character.role}">
+                                    <div class="d-flex justify-content-between align-items-center border-bottom p-2 mb-1">
+                                        <div>
+                                            <span class="character-name class-color-${character.class}">${character.name}</span>
+                                            <sup>
+                                                <i class="class-icon class-icon-${character.class}"></i>
+                                                <i class="role-icon role-icon-${character.role}"></i>
+                                            </sup>
+                                        </div>
+                                        <div class="flex-grow-1 d-flex justify-content-end">
+                                            ${character.assignments.map(assignment => {
+                                                let target = null;
+                                                if (assignment.target) {
+                                                    let info = getCharacterByName(raid.characters, assignment.target);
+                                                    target = { "name": assignment.target, "class": info.class, "role": info.role};
+                                                }
+                                            return `
+                                            <div class="shadow py-0 px-2 mx-1 rounded border">
+                                                <p class="text-center text-muted m-0">${assignment.name}</p>
+                                                <div class="d-flex justify-content-center gap-1">
+                                                    ${(assignment.raid_marker) ? `<i class="raid-marker raid-marker-${assignment.raid_marker}"></i>` : ``}
+                                                    ${(assignment.spell) ? `<img class="spell-icon" src="{{ site.baseurl}}/assets/images/spells/${assignment.spell}"/>` : ``}
+                                                    ${(assignment.value) ? `<h5>${assignment.value}</h5>` : ``}
+                                                    ${(target) ? `<span class="character-name class-color-${target.class}">${target.name}</span>` : ``}
+                                                </div>
+                                            </div>
+                                            `}).join("")}
+                                        </div>
+                                    </div>
+                                </div>
+                                `}).join("")}
+                            </div>
+                            `).join("")}
+                        </div>
+                    </div>
+                </div>
+                `).join("")}
+            </div>
+        </div>
+    `;
+
+
+    // let encounters = `
+    //     <div class="col-12">
+    //         <h4>Encounters</h4>
+    //         <div class="row" id="encounters-container">
+    //             ${(encounters)}
+    //         </div>
+    //     </div>
+    // `;
+
+    // raid.encounters.forEach(encounter => {
+    //     let html = `
+    //         <div class="col-12">
+    //             <h4>Encounters</h4>
+    //             <div class="row" id="encounters-container">
+    //                 ${(encounter.phases.len > 0)
+    //                     ? encounter.phases.forEach(phase => {
+
+    //                     })
+    //                     : ''
+    //                 }
+    //             </div>
+    //         </div>
+    //     `;
+    // });
+
+    content.html(html);
+}
+
+function getUrlParams() {
+    const params = {};
+    const query = window.location.search.substring(1);
+    $.each(query.split("&"), function(_, pair) {
+      if (pair) {
+        const parts = pair.split("=");
+        const key = decodeURIComponent(parts[0]);
+        const value = decodeURIComponent(parts[1] || "");
+        params[key] = value;
+      }
+    });
+    return params;
+}
+
+const urlParams = getUrlParams();
+if (urlParams.id) {
+    loadGistById(urlParams.id);
+}
+
+function loadGistById(gistId) {
+    const headers = {};
+
+    $.ajax({
+        url: "https://api.github.com/gists/" + gistId,
+        method: "GET",
+        headers: headers,
+        success: function (response) {
+            const firstFileKey = Object.keys(response.files)[0];
+            let raid = verifyRaidJson(response.files[firstFileKey].content);
+            if (!raid) {
+                console.error("Invalid JSON data");
+                window.location = "/raid-assign/";
+            } else {
+                loadRaid(raid, gistId);
+            }
+        },
+        error: function (xhr) {
+            console.error("Failed to load Gist:", xhr.responseJSON?.message || xhr.statusText);
+            window.location = "/raid-assign/";
+        }
+    });
+}
+
+$('body').delegate('#filter-character', 'change', function() {
+    let characterfilter = $(this).val();
+    if (characterFilter) {
+        $('#filter-class').val('');
+        $('#filter-role').val('');
+        $('.character-row').hide();
+        $(`.character-row[data-filter-character='${characterFilter}']`).show();
+    } else {
+        $('#filter-character').val('');
+        $('#filter-class').val('');
+        $('#filter-role').val('');
+        $('.character-row').show();
+    }
+});
+
+$('body').delegate('#filter-class', 'change', function() {
+    let classFilter = $(this).val();
+    if (classFilter) {
+        $('#filter-character').val('');
+        $('#filter-role').val('');
+        $('.character-row').hide();
+        $(`.character-row[data-filter-class='${classFilter}']`).show();
+    } else {
+        $('#filter-character').val('');
+        $('#filter-class').val('');
+        $('#filter-role').val('');
+        $('.character-row').show();
+    }
+});
+
+$('body').delegate('#filter-role', 'change', function() {
+    let roleFilter = $(this).val();
+    if (roleFilter) {
+        $('#filter-character').val('');
+        $('#filter-class').val('');
+        $('.character-row').hide();
+        $(`.character-row[data-filter-role='${roleFilter}']`).show();
+    } else {
+        $('#filter-character').val('');
+        $('#filter-class').val('');
+        $('#filter-role').val('');
+        $('.character-row').show();
+    }
+});

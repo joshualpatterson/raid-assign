@@ -248,6 +248,7 @@ $('body').delegate('.add-raid-encounter-phase-character-btn', 'click', function(
     const container = $(this).parent().nextAll('.raid-encounter-phase-characters-container').first();
     const character = raidEncounterPhaseCharacter();
     container.append(character);
+    updateCharacterSelectOptions();
 });
 
 // delete raid encounter phase character
@@ -261,6 +262,7 @@ $('body').delegate('.add-raid-encounter-phase-character-assignment-btn', 'click'
     const container = $(this).parent().nextAll('.raid-encounter-phase-character-assignments-container').first();
     const assignment = raidEncounterPhaseCharacterAssignment();
     container.append(assignment);
+    updateCharacterSelectOptions();
 });
 
 // delete raid encounter phase character assignment

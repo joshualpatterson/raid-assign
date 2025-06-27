@@ -22,6 +22,7 @@ title: Create Raid
                   <option value="{{ instance.id }}">{{ instance.name }} ({{ instance.abbr }})</option>
                   {% endfor %}
                 </select>
+                <div class="alert alert-danger" id="raid-instance-error" style="display: none;"></div>
               </div>
             </div>
             <div class="col-12 mb-3">
@@ -30,6 +31,7 @@ title: Create Raid
                 <div class="input-group">
                   <span class="input-group-text"><i class="bi bi-calendar-event"></i></span>
                   <input type="datetime-local" id="raid-timestamp-input" class="form-control">
+                  <div class="alert alert-danger" id="raid-timestamp-error" style="display: none;"></div>
                 </div>
               </div>
             </div>
@@ -64,6 +66,7 @@ title: Create Raid
                     <div class="accordion-body">
                       <div class="accordion-body">
                         <div class="form-group">
+                          <div class="json-export-errors-container" style="display: none;"></div>
                           <textarea id="json-export-data" class="form-control" readonly></textarea>
                         </div>
                       </div>
@@ -82,6 +85,7 @@ title: Create Raid
                         <div class="row">
                           <div class="col-12">
                             <div class="form-group">
+                              <div class="json-export-errors-container" style="display: none;"></div>
                               <label>GitHub Token (with <code>Gist</code> scope)</label>
                               <input type="password" id="github-token" class="form-control" placeholder="ghp_xxxxxxxx..." required>
                             </div>

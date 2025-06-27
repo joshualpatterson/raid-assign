@@ -137,6 +137,50 @@
     ],
     "spells":[
         {
+            "name": "Abolish Poison",
+            "img": "abolish_poison.jpg"
+        },
+        {
+            "name": "Arcane Intellect",
+            "img": "arcane_intellect.jpg"
+        },
+        {
+            "name": "Battle Shout",
+            "img": "battle_shout.jpg"
+        },
+        {
+            "name": "Blessing of Kings",
+            "img": "blessing_of_kings.jpg"
+        },
+        {
+            "name": "Blessing of Light",
+            "img": "blessing_of_light.jpg"
+        },
+        {
+            "name": "Blessing of Might",
+            "img": "blessing_of_might.jpg"
+        },
+        {
+            "name": "Blessing of Salvation",
+            "img": "blessing_of_salvation.jpg"
+        },
+        {
+            "name": "Blessing of Wisdom",
+            "img": "blessing_of_wisdom.jpg"
+        },
+        {
+            "name": "Cleanse",
+            "img": "cleanse.jpg"
+        },
+        {
+            "name": "Demoralizing Shout",
+            "img": "demoralizing_shout.jpg"
+        },
+        {
+            "name": "Dispell",
+            "img": "dispell.jpg"
+        },
+        {
             "name": "Faerie Fire",
             "img": "faerie_fire.jpg"
         },

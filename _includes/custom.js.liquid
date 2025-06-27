@@ -403,10 +403,78 @@ function compileJsonExport() {
     $('#json-export-data').val(JSON.stringify(raid));
 }
 
-$(document).on('input change', 'input, select', function () {
-    compileJsonExport();
+function validateFields() {
+
+    let errors = [];
+
+    // instance
+    if ($('#raid-instance-input').val() === "") {
+        errors.push("A raid instance must be selected.");
+    }
+
+    // timestamp
+    const value = $('#raid-timestamp-input').val();
+    if (!value) {
+        errors.push("A raid start time must be entered.");
+    } else {
+        const date = new Date(value);
+        if (isNaN(date.getTime())) {
+            errors.push("Invalid raid start time format.");
+        } 
+    }
+
+    // encounter names
+    $('.raid-encounter-name-input').each(function(i) {
+        if ($(this).val() === "") {
+            errors.push(`Encounter #${i+1} needs a name.`);
+        }
+    });
+
+    // phase names
+    $('.raid-encounter-phase-name-input').each(function(i) {
+        if ($(this).val() === "") {
+            errors.push(`Phase #${i+1} needs a name.`);
+        }
+    });
+
+    // phase characters
+    $('.raid-encounter-phase-character-input').each(function(i) {
+        if ($(this).val() === "") {
+            errors.push(`Phase Character #${i+1} needs to be selected.`);
+        }
+    });
+
+    // assignment names
+    $('.raid-encounter-phase-character-assignment-name-input').each(function(i) {
+        if ($(this).val() === "") {
+            errors.push(`Assignment #${i+1} needs a name.`);
+        }
+    });
+
+    if (errors.length > 0) {
+        $('.json-export-data').val('Invalid: see errors.');
+        let html = `<ul class="text-danger">${errors.map(err => `<li>${err}</li>`).join("")}</ul>`;
+        $('.json-export-errors-container').html(html).show();
+        $('#save-gist-btn').attr('disabled', true);
+        return false;
+    } else {
+        $('.json-export-errors-container').html('').hide();
+        $('#save-gist-btn').attr('disabled', false);
+        return true;
+    }
+}
+
+$(document).on('input change click', 'input, select, button', function() {
+    if (validateFields()) {
+        compileJsonExport();
+    }
 });
 
+
+$('body').delegate('.raid-character-name-input', 'change, input', function() {
+    const cleaned = $(this).val().replace(/[^A-Za-zÀ-ÿ]/g, '');
+    $(this).val(cleaned.charAt(0).toUpperCase() + cleaned.slice(1).toLowerCase());
+});
 
 document.getElementById('save-gist-btn').addEventListener('click', async () => {
     const token = document.getElementById('github-token').value.trim();

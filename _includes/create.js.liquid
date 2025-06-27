@@ -423,6 +423,27 @@ function validateFields() {
         } 
     }
 
+    // character names
+    $('.raid-character-name-input').each(function(i) {
+        if ($(this).val() === "") {
+            errors.push(`Character #${i+1} needs a name.`);
+        }
+    });
+
+    // character classes
+    $('.raid-character-class-input').each(function(i) {
+        if ($(this).val() === "") {
+            errors.push(`Character #${i+1} needs a class.`);
+        }
+    });
+
+    // character roles
+    $('.raid-character-role-input').each(function(i) {
+        if ($(this).val() === "") {
+            errors.push(`Character #${i+1} needs a role.`);
+        }
+    });
+
     // encounter names
     $('.raid-encounter-name-input').each(function(i) {
         if ($(this).val() === "") {
@@ -452,7 +473,7 @@ function validateFields() {
     });
 
     if (errors.length > 0) {
-        $('.json-export-data').val('Invalid: see errors.');
+        $('#json-export-data').val('Invalid: see errors.');
         let html = `<ul class="text-danger">${errors.map(err => `<li>${err}</li>`).join("")}</ul>`;
         $('.json-export-errors-container').html(html).show();
         $('#save-gist-btn').attr('disabled', true);

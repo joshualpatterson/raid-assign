@@ -1,5 +1,6 @@
 ---
-layout: raid
+layout: default
+page_type: raid
 title: Raid
 ---
 

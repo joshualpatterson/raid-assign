@@ -1,12 +1,12 @@
 ---
 layout: default
+page_type: create
 title: Create Raid
 ---
 
-<h1 class="text-center mb-5">Raid Assign</h1>
 <div class="container" id="content">
   <div class="row justify-content-center">
-    <div class="col-12 col-lg-6">
+    <div class="col-12 col-lg-8">
       <div class="card mb-5">
         <div class="card-header">
           <h2>Create Raid</h2>
@@ -76,7 +76,7 @@ title: Create Raid
                 <div class="accordion-item">
                   <h2 class="accordion-header" id="import-export-accordian-header-three">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                      <i class="bi bi-floppy me-1"></i> Save Via Token
+                      <i class="bi bi-github me-1"></i> Save Via Gist
                     </button>
                   </h2>
                   <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="import-export-accordian-header-three" data-bs-parent="#import-export-accordian">
@@ -90,13 +90,45 @@ title: Create Raid
                               <input type="password" id="github-token" class="form-control" placeholder="ghp_xxxxxxxx..." required>
                             </div>
                           </div>
-                          <div class="col-12 mt-3">
+                          <div class="col-12 mt-2">
+                            <div class="alert alert-warning">Do not provide a token unless you know what you are doing and trust this site. It is a static site hosted on GitHub pages and the source code is publicly available. If you are uncertain, see the instructions below for saving manually.</div>
+                          </div>
+                          <div class="col-12 mt-2">
                             <div class="d-flex justify-content-center align-items-center">
                               <button class="btn btn-primary mt-2" id="save-gist-btn"><i class="bi bi-floppy me-1"></i> Save with Gist</button>
                             </div>
                           </div>
                           <div class="col-12 mt-3">
                             <div id="saved-raid-container">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="import-export-accordian-header-four">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                      <i class="bi bi-floppy me-1"></i> Save Manually
+                    </button>
+                  </h2>
+                  <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="import-export-accordian-header-four" data-bs-parent="#import-export-accordian">
+                    <div class="accordion-body">
+                      <div class="accordion-body">
+                        <div class="row">
+                          <div class="col-12">
+                            <div class="form-group">
+                              <p>If you do not want to use a GitHub token to save your raid, you can opt to create your own save file and reference it as a raid ID on this site:</p>
+                              <ol type="1">
+                                <li>Login or create a <a href="https://github.com/login" target="_BLANK">GitHub</a> account.</li>
+                                <li>Navigate to <a href="https://gist.github.com/>" target="_BLANK">GitHub Gist.</a></li>
+                                <li>Enter <code>raid.json</code> into the "Filename including extension..." field.</li>
+                                <li>Copy the json data from the above <i class="bi bi-download me-1"></i> Export section and paste it into the body of the Gist.</li>
+                                <li>Create a <strong>Public</strong> Gist (<strong>Important! Secret Gists will not work</strong>).</li>
+                                <li>Copy the Gist ID from the URL that comes after your username <code>https://gist.github.com/{yourUserName}/{gistId}</code>.</li>
+                                <li>The Gist ID will double as the Raid ID and can be accessed from the home page of this site by entering it into the relevant field.</li>
+                              </ol>
                             </div>
                           </div>
                         </div>
